@@ -30,7 +30,6 @@ export default function SignIn() {
     // Simuler une authentification réussie
     if (data.email && data.password) {
       login({ name: 'Utilisateur', email: data.email });
-      toast.success('Connexion réussie!');
       router.push('/dashboard');
     } else {
       toast.error('Veuillez remplir tous les champs.');

@@ -13,8 +13,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
-    logout();
-    router.push('/');
+    logout(); // Par défaut, manual = true
   };
 
   const menuVariants = {

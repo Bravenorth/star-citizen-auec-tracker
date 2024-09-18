@@ -4,27 +4,36 @@
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import styles from '../styles/Home.module.css';
+import { toast } from 'react-toastify';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user } = useAuth();
+  const { user, isLoggingOut } = useAuth();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (!user) {
-      router.push('/signin');
-    } else {
-      setIsLoading(false);
-    }
-  }, [user, router]);
+    // Indiquer que le composant est monté
+    setIsMounted(true);
+  }, []);
 
-  if (isLoading) {
-    return <div className={styles.container}><p>Chargement...</p></div>;
+  useEffect(() => {
+    if (isMounted && user === null && !isLoggingOut) {
+      // Afficher la notification seulement si ce n'est pas une déconnexion manuelle
+      toast.error('Vous devez vous connecter pour accéder à cette page.');
+      router.push('/signin');
+    }
+  }, [user, isMounted, router, isLoggingOut]);
+
+  if (!isMounted) {
+    return null; // Optionnel : Afficher un indicateur de chargement
+  }
+
+  if (user === null) {
+    return null; // L'utilisateur est redirigé vers la page de connexion
   }
 
   return <>{children}</>;

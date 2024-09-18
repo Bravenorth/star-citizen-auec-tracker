@@ -29,7 +29,7 @@ const schema = yup.object().shape({
 export default function SignUp() {
   const { login } = useAuth();
   const router = useRouter();
-  const { register, handleSubmit, formState: { errors }, watch } = useForm<SignUpFormInputs>({
+  const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormInputs>({
     resolver: yupResolver(schema),
   });
 
@@ -37,7 +37,6 @@ export default function SignUp() {
     // Simuler une inscription réussie
     if (data.name && data.email && data.password) {
       login({ name: data.name, email: data.email });
-      toast.success('Inscription réussie!');
       router.push('/dashboard');
     } else {
       toast.error('Veuillez remplir tous les champs.');
