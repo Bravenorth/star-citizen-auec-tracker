@@ -19,10 +19,11 @@ interface SignUpFormInputs {
 const schema = yup.object().shape({
   name: yup.string().required('Nom requis'),
   email: yup.string().email('Email invalide').required('Email requis'),
-  password: yup.string().min(6, 'Le mot de passe doit comporter au moins 6 caractères').required('Mot de passe requis'),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password'), null], 'Les mots de passe ne correspondent pas')
+  password: yup.string()
+    .min(6, 'Le mot de passe doit comporter au moins 6 caractères')
+    .required('Mot de passe requis'),
+  confirmPassword: yup.string()
+    .oneOf([yup.ref('password')], 'Les mots de passe ne correspondent pas') // Correction ici
     .required('Confirmer le mot de passe'),
 });
 
@@ -37,6 +38,7 @@ export default function SignUp() {
     // Simuler une inscription réussie
     if (data.name && data.email && data.password) {
       login({ name: data.name, email: data.email });
+      toast.success('Inscription réussie!');
       router.push('/dashboard');
     } else {
       toast.error('Veuillez remplir tous les champs.');

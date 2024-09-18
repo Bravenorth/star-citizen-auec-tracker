@@ -16,8 +16,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // Indiquer que le composant est monté
-    setIsMounted(true);
+    setIsMounted(true); // Indique que le composant est monté
   }, []);
 
   useEffect(() => {
@@ -29,7 +28,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }, [user, isMounted, router, isLoggingOut]);
 
   if (!isMounted) {
-    return null; // Optionnel : Afficher un indicateur de chargement
+    return null; // Ou afficher un indicateur de chargement
   }
 
   if (user === null) {

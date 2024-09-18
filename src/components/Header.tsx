@@ -4,13 +4,18 @@
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Header() {
   const { user, logout } = useAuth();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); // Nouvel état
+
+  useEffect(() => {
+    setIsMounted(true); // Indique que le composant est monté
+  }, []);
 
   const handleLogout = () => {
     logout(); // Par défaut, manual = true
@@ -32,6 +37,11 @@ export default function Header() {
       },
     },
   };
+
+  // Si le composant n'est pas monté, ne rien rendre pour éviter les erreurs d'hydratation
+  if (!isMounted) {
+    return null; // Ou afficher un indicateur de chargement
+  }
 
   return (
     <header className="bg-blue-600 text-white shadow-md">
